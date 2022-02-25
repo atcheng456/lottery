@@ -1,0 +1,29 @@
+* {
+    font-family: monospace;
+    text-align: center;
+    background-color: antiquewhite;
+}
+
+h1 {
+    font-size: 40px;
+}
+.pick {
+    border: 3px solid black;
+    width: 300px;
+    margin: 0 auto;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.winning {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.payout {
+    text-align: center;
+    font-size: 30px;
+    border: 3px solid black;
+    width: 300px;
+    margin: 0 auto;
+}

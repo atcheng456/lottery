@@ -1,0 +1,171 @@
+<!DOCTYPE html> 
+
+<html>
+    <head>
+        <title>Lottery</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://unpkg.com/mathjs@10.1.1/lib/browser/math.js"></script>
+        
+        <script language = "javascript">         
+            //draw 5 random unique numbers and one lucky number
+            function draw(nums) {
+                for(let i = 0; i < 5; i++) {
+                    while(nums[i] == 0) {
+                        nums[i] = Math.round(Math.random() * 49);
+                    }
+                }
+                checkUnique(nums);
+            }
+            
+            function luckyDraw() {
+                num = 0;                 
+                while(num == 0) {
+                    num= Math.round(Math.random() * 19); //lucky num (1- 18)
+                }
+                return num;
+            }
+            
+            function sort(nums) {
+                for(let j = 0; j < 5; j++) {
+                    for(let i = 0; i < 5; i++) {
+                        if(nums[i] > nums[i+1]) {
+                            x = nums[i+1];
+                            nums[i+1] = nums[i];
+                            nums[i] = x;
+                        }
+                    }
+                }
+            }
+            
+            function checkUnique(nums) {
+                let position = 0;
+                for(let i = 0; i < 5; i++) {
+                    for(let j = 0; j < 5; j++) {
+                        if(i != j) {
+                            if(nums[j] == nums[i]) {
+                                nums[i] = Math.round(Math.random() * 49);
+                            } 
+                        }
+                    }
+                }
+            }
+            
+            function compare(nums, win) {
+                let matching = 0;
+                for(let i = 0; i < 5; i++) {
+                    for(let j = 0; j < 5; j++)
+                        if(i != j) {
+                            if(nums[i] == win[j]) {
+                                matching++;
+                            }
+                        }
+                }
+                return matching; 
+            }
+            
+            function luckyBall(num, win) {
+                if(num == win) {
+                    return "IT'S A MATCH!";
+                } else {
+                    return "Better luck next time!";
+                }
+            }
+            
+            function prize(luckynum, win, matching) {
+                let luckyMatch = luckyBall(luckynum, win);
+                
+                if(luckyMatch == "IT'S A MATCH!") {
+                    if(matching == 0) {
+                        return "$4";
+                    } else if(matching == 1) {
+                        return "$6";
+                    } else if(matching == 2) {
+                        return "$25";
+                    } else if(matching == 3) {
+                        return "$150";
+                    } else if(matching == 4) {
+                        return "$5000";
+                    } else if(matching == 5) {
+                        return "$7,000 a WEEK for LIFE";
+                    } 
+                } else {
+                    if(matching == 2) {
+                        return "$3";
+                    } else if(matching == 3) {
+                        return "$20";
+                    } else if(matching == 4) {
+                        return "$200";
+                    } else if(matching == 5) {
+                        return "$25,000 a YEAR for LIFE";
+                    } else {
+                        return "$0";
+                    }
+                }
+            }
+        </script>
+    </head>
+    
+    <body>
+        <h1>THE LOTTERY: LUCKY FOR LIFE</h1>
+        <p>Your Draw: <span id="pick"></span></p>
+        <div class = "pick">
+            <p>Your Numbers: <span id="sorted"></span></p>
+            <p>YOUR LUCKY NUMBER: <span id="luck"></span></p>
+        </div>
+        
+        <div class = "winning">
+            <p>Winning Numbers: <span id="win"></span></p>
+            <p>TODAY'S LUCKY NUMBER: <span id="lucknum"></span></p>
+        </div>
+        
+        <p>Total Number of Matching Numbers: <span id="match"></span></p>
+        <p>Lucky ball match: <span id="luckMatch"></span></p>
+        
+        <p class = "payout">YOUR PRIZE: <span id = "payout"></span></p>
+        
+        <script language = "javascript">      
+            var numbers = [0,0,0,0,0]; //5 numbers 
+            var luckyNumber = luckyDraw();
+            const winningCombo = [12, 15, 24, 35, 48, 3];
+            var totalWinningNumbers = 0;
+            
+            draw(numbers);
+            
+            //user numbers
+            for(let i = 0; i < 5; i++) {
+                document.getElementById("pick").innerHTML += numbers[i] + " ";
+            }
+            //sort user's numbers
+            sort(numbers);
+            
+            //display user's sorted numbers
+            for(let i = 0; i < 5; i++) {
+                document.getElementById("sorted").innerHTML += numbers[i] + " ";
+            }
+            
+            //user's lucky number
+            document.getElementById("luck").innerHTML = luckyNumber;
+            
+            //The Winning Numbers
+            for(let i = 0; i < 5; i++) {
+                document.getElementById("win").innerHTML += winningCombo[i] + " ";
+            }
+            
+            //Winning lucky number
+            document.getElementById("lucknum").innerHTML = winningCombo[5];
+            
+            //How many of the "pick" matched the winning numbers
+            totalWinningNumbers = compare(numbers, winningCombo); 
+            document.getElementById("match").innerHTML = totalWinningNumbers;
+            
+            //Lucky Ball Match
+            document.getElementById("luckMatch").innerHTML = luckyBall(luckyNumber, winningCombo[5]);
+            
+            //Payout
+            document.getElementById("payout").innerHTML = prize(luckyNumber, winningCombo[5], totalWinningNumbers);
+            
+        </script>
+        
+        
+    </body>
+</html>
